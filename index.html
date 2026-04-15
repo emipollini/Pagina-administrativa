@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ClubAdmin - Sistema de Gestión Institucional</title>
+<title>ClubAdmin - Software de Gestión</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,6 @@
     :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --success: #22c55e; --danger: #ef4444; --warning: #facc15; }
     body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-tap-highlight-color: transparent; }
     
-    /* Header & Branding */
     header { 
         background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         padding: 15px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
@@ -28,12 +27,10 @@
     .club-logo { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; background: #334155; }
     .club-name { font-size: 18px; font-weight: 700; color: #f8fafc; }
 
-    /* Tabs */
     .tabs-container { display: flex; width: 100%; background: var(--card); border-radius: 10px; overflow: hidden; }
     .tab-btn { flex: 1; padding: 10px 5px; font-size: 13px; background: transparent; color: #94a3b8; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .tab-btn.active { background: var(--primary); color: var(--bg); }
 
-    /* UI Elements */
     .container { display: flex; flex-direction: column; padding: 15px; gap: 15px; }
     .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
     .card h3 { margin-top: 0; font-weight: 600; color: #f8fafc; margin-bottom: 15px; font-size: 16px; }
@@ -44,23 +41,21 @@
     button { padding: 14px; border-radius: 10px; border: none; width: 100%; font-size: 15px; font-weight: 600; font-family: 'Poppins'; cursor: pointer; transition: transform 0.1s; margin: 5px 0; }
     button:active { transform: scale(0.96); }
     
-    /* Lists */
     .player { background: #0b1220; padding: 18px; border-radius: 14px; margin-top: 15px; border: 1px solid #1e293b; }
     .badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; margin: 5px 0; text-transform: uppercase; }
     .stateRed { background: var(--danger); color: white; }
     .stateGreen { background: var(--success); color: black; }
     .debt-label { color: var(--warning); font-weight: 600; font-size: 14px; }
+    .packGray { background: #334155; color: white; border: 1px solid #475569; }
+    .packGreen { background: #10b981; color: #000; border: 1px solid #10b981;}
 
-    /* Accounting Items */
     .rev-detail { font-size: 14px; color: #94a3b8; background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; margin-top: 15px; }
     .acc-item { padding: 12px; border-radius: 10px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; background: #0f172a; }
     .del-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 30px; height: 30px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; font-size:18px; cursor:pointer;}
     
-    /* Settings Section */
     .settings-group { background: #0b1220; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #1e293b; }
     .settings-group p { margin-top: 0; color: var(--primary); font-weight: 600; font-size: 14px; }
 
-    /* Login */
     #loginView { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; }
     .login-box { background: var(--card); padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 350px; text-align: center; border: 1px solid rgba(56, 189, 248, 0.3); }
 
@@ -98,7 +93,6 @@
     </div>
 
     <div id="mainContent" style="display:none;">
-        
         <div id="tabResumen" class="tab-content active">
             <div class="card">
                 <h3>💰 Balance del Mes</h3>
@@ -127,7 +121,7 @@
                     <button onclick="addPlayer()" style="background:var(--primary); color: black; margin:0; width:100px;">Agregar</button>
                 </div>
             </div>
-            <input type="text" id="searchInput" placeholder="🔍 Buscar socio..." onkeyup="renderPlayers()">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar socio..." onkeyup="renderPlayers()" style="background:#1e293b; border:1px solid #334155;">
             <div id="playersList"></div>
         </div>
 
@@ -153,6 +147,9 @@
             <input id="conf_name" placeholder="Ej: Club Deportivo..."/>
             <label style="font-size:12px;">Escudo (Subir imagen):</label>
             <input type="file" accept="image/*" onchange="handleLogoUpload(event)">
+            <div id="logoPreviewContainer" style="display:none; text-align:center; margin: 10px 0;">
+                <img id="logoPreview" src="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8;">
+            </div>
             <button onclick="saveBranding()" style="background:var(--success); color:black; margin-top:10px;">Guardar Identidad</button>
         </div>
 
@@ -182,44 +179,32 @@
 </div>
 
 <script>
-// ==========================================
-// CONFIGURACIÓN DE FIREBASE (A COMPLETAR)
-// ==========================================
+// LLAVES DE TU NUEVO FIREBASE (PÁGINA ADMINISTRATIVA)
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  databaseURL: "TU_DATABASE_URL",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyC2B36GFhscSn4H3OUUcw-uIwzRyRP5d6c",
+  authDomain: "pagina-administrativa.firebaseapp.com",
+  databaseURL: "https://pagina-administrativa-default-rtdb.firebaseio.com",
+  projectId: "pagina-administrativa",
+  storageBucket: "pagina-administrativa.firebasestorage.app",
+  messagingSenderId: "534068709032",
+  appId: "1:534068709032:web:a58c5d9354bff2cb72e49d"
 };
 
-// Inicialización Segura
-if(firebaseConfig.apiKey !== "TU_API_KEY") {
-    firebase.initializeApp(firebaseConfig);
-}
-
+firebase.initializeApp(firebaseConfig);
 const MASTER_PASS = "admin123";
-let db = (firebase.apps.length) ? firebase.database() : null;
+let db = firebase.database();
 let isLoggedIn = false;
 let currentTab = 'resumen';
 let currentView = 'list';
 let selectedPlayer = null;
 let selectedExtraDate = null;
 
-// Estructura de datos inicial
 let data = {
-    players: [],
-    monthPayments: {},
-    history: {},
-    accounting: {},
-    branding: { name: "ClubAdmin Demo", logo: "" },
+    players: [], monthPayments: {}, history: {}, accounting: {},
+    branding: { name: "Demo ClubAdmin", logo: "" },
     extraActivity: { enabled: true, name: "Actividad Extra", dayOfWeek: 5, price: 5000, packPrice: 15000 },
     dynamicPlans: { "p1": { name: "Abono Estándar", price: 20000 } },
-    playerPlans: {},
-    playerExtraPacks: {},
-    extraAttendance: {}
+    playerPlans: {}, playerExtraPacks: {}, extraAttendance: {}
 };
 
 let now = new Date();
@@ -236,26 +221,21 @@ function checkLogin() {
     } else { document.getElementById('loginError').style.display = 'block'; }
 }
 
-if(db) {
-    // Escucha en ruta genérica 'clubData'
-    db.ref('clubData').on('value', snap => {
-        if(snap.val()) {
-            data = { ...data, ...snap.val() };
-            // Asegurar integridad de arrays y objetos
-            if(!data.players) data.players = [];
-            if(!data.accounting) data.accounting = {};
-            if(!data.monthPayments) data.monthPayments = {};
-        }
-        updateBrandingUI();
-        if(isLoggedIn) render();
-    });
-}
+db.ref('clubAdminData').on('value', snap => {
+    if(snap.val()) {
+        data = { ...data, ...snap.val() };
+        if(!data.players) data.players = [];
+        if(!data.accounting) data.accounting = {};
+        if(!data.monthPayments) data.monthPayments = {};
+    }
+    updateBrandingUI();
+    if(isLoggedIn) render();
+});
 
-function save(){ if(db) db.ref('clubData').set(data); }
+function save(){ db.ref('clubAdminData').set(data); }
 
 function toNum(v) { return Number(v) || 0; }
 
-// --- BRANDING ---
 function updateBrandingUI() {
     document.getElementById('headerName').textContent = data.branding.name;
     if(data.branding.logo) {
@@ -274,6 +254,8 @@ function handleLogoUpload(e) {
             canvas.width = 150; canvas.height = 150;
             canvas.getContext('2d').drawImage(img, 0, 0, 150, 150);
             data.branding.logo = canvas.toDataURL('image/jpeg', 0.7);
+            document.getElementById('logoPreview').src = data.branding.logo;
+            document.getElementById('logoPreviewContainer').style.display = 'block';
             save(); alert("Logo cargado!");
         };
         img.src = event.target.result;
@@ -286,7 +268,6 @@ function saveBranding() {
     save(); alert("Nombre institucional guardado.");
 }
 
-// --- ACCOUNTING ---
 function addEntry(type) {
     let desc = document.getElementById('accDesc').value.trim();
     let amt = toNum(document.getElementById('accAmount').value);
@@ -298,39 +279,33 @@ function addEntry(type) {
 }
 
 function deleteEntry(id) {
-    data.accounting[selectedMonth] = data.accounting[selectedMonth].filter(x => x.id !== id);
-    save();
+    data.accounting[selectedMonth] = data.accounting[selectedMonth].filter(x => x.id !== id); save();
 }
 
-// --- PLANS ---
 function renderPlansSettings() {
-    const cont = document.getElementById('dynamicPlansSettings');
-    cont.innerHTML = '';
+    const cont = document.getElementById('dynamicPlansSettings'); cont.innerHTML = '';
     Object.keys(data.dynamicPlans).forEach(id => {
         let p = data.dynamicPlans[id];
-        cont.innerHTML += `<div class="plan-row acc-item" data-id="${id}"><input class="pn" value="${p.name}" style="flex:2"/><input class="pp" type="number" value="${p.price}" style="flex:1"/><button onclick="removePlanRow('${id}')" style="width:auto; background:none; color:red;">×</button></div>`;
+        cont.innerHTML += `<div class="plan-row acc-item" data-id="${id}" style="display:flex; gap:5px;"><input class="pn" value="${p.name}" style="flex:2; font-size:14px;"/><input class="pp" type="number" value="${p.price}" style="flex:1; font-size:14px;"/><button onclick="removePlanRow('${id}')" style="width:auto; background:none; color:red; box-shadow:none; padding:0 10px; font-size:20px;">×</button></div>`;
     });
 }
 function addPlanRow(){ let id = "p"+Date.now(); data.dynamicPlans[id] = {name:"", price:0}; renderPlansSettings(); }
 function removePlanRow(id){ delete data.dynamicPlans[id]; renderPlansSettings(); }
 function savePlans() {
-    let rows = document.querySelectorAll('.plan-row');
-    data.dynamicPlans = {};
+    let rows = document.querySelectorAll('.plan-row'); data.dynamicPlans = {};
     rows.forEach(r => { let id = r.dataset.id; data.dynamicPlans[id] = { name: r.querySelector('.pn').value, price: toNum(r.querySelector('.pp').value) }; });
     save(); alert("Planes guardados.");
 }
 
-// --- EXTRA MODULE ---
 function saveExtraConfig() {
     data.extraActivity.enabled = document.getElementById('conf_extraStatus').value === "true";
     data.extraActivity.name = document.getElementById('conf_extraName').value || "Actividad";
     data.extraActivity.dayOfWeek = parseInt(document.getElementById('conf_extraDay').value);
     data.extraActivity.price = toNum(document.getElementById('conf_extraPrice').value);
     data.extraActivity.packPrice = toNum(document.getElementById('conf_extraPack').value);
-    save(); alert("Módulo extra guardado.");
+    save(); alert("Módulo extra guardado."); render();
 }
 
-// --- DEBT CALCULATION ---
 function calcDebt(p) {
     let paid = toNum(data.monthPayments[selectedMonth]?.[p]);
     let planId = data.playerPlans?.[p] || Object.keys(data.dynamicPlans)[0];
@@ -347,7 +322,6 @@ function calcDebt(p) {
     return Math.max(0, (basePrice - paid) + extraDebt);
 }
 
-// --- RENDERING ---
 function render() {
     updateMonthSelector();
     const ext = data.extraActivity;
@@ -366,10 +340,8 @@ function renderBalance() {
     let cuotas = 0; let sueltos = 0; let packs = 0; let otrosInc = 0; let gastos = 0;
     let ext = data.extraActivity;
 
-    // Ingresos Mensuales
     if(data.monthPayments[selectedMonth]) Object.values(data.monthPayments[selectedMonth]).forEach(v => cuotas += toNum(v));
     
-    // Ingresos Actividad Extra
     if(ext.enabled) {
         Object.keys(data.extraAttendance || {}).forEach(k => {
             if(k.startsWith(selectedMonth)) {
@@ -379,7 +351,6 @@ function renderBalance() {
         data.players.forEach(p => { if(data.playerExtraPacks?.[p]) packs += ext.packPrice; });
     }
     
-    // Contabilidad Genérica
     if(data.accounting[selectedMonth]) {
         data.accounting[selectedMonth].forEach(x => { if(x.type === 'income') otrosInc += x.amt; else gastos += x.amt; });
     }
@@ -414,18 +385,18 @@ function renderPlayers() {
             <div style="display:flex; justify-content:space-between;"><b>${p}</b> <span class="badge ${debt>0?'stateRed':'stateGreen'}">${debt>0?'Pendiente':'Al día'}</span></div>
             <div class="debt-label">Saldo: $${debt.toLocaleString()}</div>
             <div style="display:flex; gap:5px; margin-top:10px;">
-                <select style="flex:1.5" onchange="if(!data.playerPlans) data.playerPlans={}; data.playerPlans['${p}']=this.value; save();">
+                <select style="flex:1.5; font-size:14px;" onchange="if(!data.playerPlans) data.playerPlans={}; data.playerPlans['${p}']=this.value; save(); render();">
                     ${Object.keys(data.dynamicPlans).map(id => `<option value="${id}" ${planId==id?'selected':''}>${data.dynamicPlans[id].name}</option>`).join('')}
                     ${ext.enabled ? `<option value="extra_only" ${planId==='extra_only'?'selected':''}>Solo ${ext.name}</option>` : ''}
                 </select>
-                ${ext.enabled ? `<button class="${pack?'packGreen':'packGray'}" style="flex:1; font-size:10px;" onclick="if(!data.playerExtraPacks) data.playerExtraPacks={}; data.playerExtraPacks['${p}']=!pack; save();">Pack ${ext.name}</button>` : ''}
+                ${ext.enabled ? `<button class="${pack?'packGreen':'packGray'}" style="flex:1; font-size:11px;" onclick="if(!data.playerExtraPacks) data.playerExtraPacks={}; data.playerExtraPacks['${p}']=!pack; save(); render();">${pack?'Pack ✔':'Pack ✖'}</button>` : ''}
             </div>
-            <div style="display:flex; gap:5px;"><input id="pay_${p}" type="number" placeholder="Monto"/><button onclick="payMonth('${p}')" style="width:100px; background:var(--success); color:black;">Cobrar</button></div>
+            <div style="display:flex; gap:5px;"><input id="pay_${p}" type="number" placeholder="Monto" style="font-size:14px;"/><button onclick="payMonth('${p}')" style="width:100px; background:var(--success); color:black; font-size:14px;">Cobrar</button></div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:5px;">
                 <button onclick="selectedPlayer='${p}'; showView('profile');" class="viewBtn">Historial</button>
                 <a href="https://wa.me/?text=Hola ${p}! Tenés un pendiente de $${debt} en ${data.branding.name}." class="wsBtn" target="_blank">📲 Aviso</a>
             </div>
-            <button onclick="removePlayer('${p}')" style="background:none; color:var(--danger); font-size:12px; margin-top:10px;">Dar de baja</button>
+            <button onclick="removePlayer('${p}')" style="background:none; color:var(--danger); font-size:12px; margin-top:10px; width:auto; padding:0; box-shadow:none;">Dar de baja</button>
         `;
         list.appendChild(el);
     });
@@ -437,21 +408,25 @@ function payMonth(p) {
     data.monthPayments[selectedMonth][p] = (data.monthPayments[selectedMonth][p] || 0) + amt;
     if(!data.history[p]) data.history[p] = [];
     data.history[p].push({ id: Date.now(), date: new Date().toLocaleDateString(), amt, month: selectedMonth });
-    save();
+    save(); render();
 }
 
-function removePlayer(p) { if(confirm(`¿Baja definitiva de ${p}?`)) { data.players = data.players.filter(x => x !== p); save(); } }
-function addPlayer() { let n = document.getElementById('name').value.trim(); if(n) { data.players.push(n); document.getElementById('name').value=''; save(); } }
+function removePlayer(p) { if(confirm(`¿Baja definitiva de ${p}?`)) { data.players = data.players.filter(x => x !== p); save(); render(); } }
+function addPlayer() { let n = document.getElementById('name').value.trim(); if(n) { data.players.push(n); document.getElementById('name').value=''; save(); render(); } }
 
 function renderExtraDates() {
     let cont = document.getElementById('extraDatesContainer'); cont.innerHTML = '';
     let ext = data.extraActivity;
+    let parts = selectedMonth.split(" de ");
+    let mIdx = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"].indexOf(parts[0].toLowerCase());
+    let year = parseInt(parts[1] || new Date().getFullYear());
+
     for(let i=1; i<=31; i++){
-        let d = new Date(2026, now.getMonth(), i);
-        if(d.getMonth() !== now.getMonth()) break;
+        let d = new Date(year, mIdx, i);
+        if(d.getMonth() !== mIdx) break;
         if(d.getDay() === ext.dayOfWeek){
             let b = document.createElement('button'); b.className = 'viewBtn'; b.style.marginBottom = '8px';
-            b.textContent = `${ext.name} - ${i} de ${selectedMonth.split(' de ')[0]}`;
+            b.textContent = `${ext.name} - ${i} de ${parts[0]}`;
             b.onclick = () => { selectedExtraDate = i; showView('extraDetail'); };
             cont.appendChild(b);
         }
@@ -475,17 +450,17 @@ function toggleExtra(p, d, field) {
     if(!data.extraAttendance[k][p]) data.extraAttendance[k][p] = {present:false, paid:false};
     data.extraAttendance[k][p][field] = !data.extraAttendance[k][p][field];
     if(field === 'present' && !data.extraAttendance[k][p].present) data.extraAttendance[k][p].paid = false;
-    save();
+    save(); render();
 }
 
 function renderProfile() {
     let p = selectedPlayer; let h = data.history[p] || [];
     let html = `<button onclick="showView('list')" style="background:#475569; color:white;">⬅ Volver</button><h2>${p}</h2>`;
+    if(h.length === 0) html += '<p style="color:#94a3b8;">No hay cobros registrados.</p>';
     h.slice().reverse().forEach(x => { html += `<div class="acc-item" style="border-left:4px solid var(--primary)"><span>${x.date}</span><b>$${x.amt}</b></div>`; });
     document.getElementById('profileView').innerHTML = html;
 }
 
-// Navigation helpers
 function switchTab(t) { currentTab = t; render(); }
 function setMonth(m) { selectedMonth = m; render(); }
 function showView(v) {
@@ -494,6 +469,7 @@ function showView(v) {
     ['profileView', 'extraDetailView', 'settingsView'].forEach(id => document.getElementById(id).style.display = (v === id.replace('View', '')) ? 'block' : 'none');
     if(v==='settings') {
         document.getElementById('conf_name').value = data.branding.name;
+        if(data.branding.logo) { document.getElementById('logoPreview').src = data.branding.logo; document.getElementById('logoPreviewContainer').style.display = 'block'; }
         let ext = data.extraActivity;
         document.getElementById('conf_extraStatus').value = ext.enabled ? "true" : "false";
         document.getElementById('conf_extraName').value = ext.name;
@@ -509,8 +485,7 @@ function updateMonthSelector() {
     for(let i=0; i<12; i++) {
         let d = new Date(2026, i, 1);
         let opt = document.createElement('option'); opt.value = getMonthKey(d); opt.textContent = getMonthKey(d);
-        if(opt.value === selectedMonth) opt.selected = true;
-        sel.appendChild(opt);
+        if(opt.value === selectedMonth) opt.selected = true; sel.appendChild(opt);
     }
 }
 
